@@ -819,6 +819,8 @@ Working through a Problem from Beginning to End:
 ### Additional SQL Resources
  - [SQL Authority: SQL Puzzles](https://blog.sqlauthority.com/category/sql-puzzle/)
  - [SQLZOO](https://sqlzoo.net/wiki/SQL_Tutorial)
+ - [How to Run SQL from Jupyter Notebook or Datalore](https://blog.jetbrains.com/datalore/2022/02/14/how-to-run-sql-from-jupyter-notebook-two-easy-ways/)
+ - 
 
 ### Practise
 Pull a list of customer ids with the customer’s full name, and address, along with combining their city and country together. Be sure to make a space in between these two and make it UPPER CASE. (e.g. LOS ANGELES USA)
