@@ -815,3 +815,29 @@ Working through a Problem from Beginning to End:
     - Date changes
     - Date indicators
     - Work the problem for beginning to end
+
+### Additional SQL Resources
+ - [SQL Authority: SQL Puzzles](https://blog.sqlauthority.com/category/sql-puzzle/)
+ - [SQLZOO](https://sqlzoo.net/wiki/SQL_Tutorial)
+
+### Practise
+Pull a list of customer ids with the customer’s full name, and address, along with combining their city and country together. Be sure to make a space in between these two and make it UPPER CASE. (e.g. LOS ANGELES USA)
+```SQL
+SELECT customerId, FirstName,
+ LastName, Address, UPPER (city || ' ' || country || '')
+FROM Customers;
+```
+Create a new employee user id by combining the first 4 letters of the employee’s first name with the first 2 letters of the employee’s last name. Make the new field lower case and pull each individual step to show your work.
+```SQL
+SELECT FirstName, LastName, 
+Lower(SUBSTR(FirstName, 1,4) || SUBSTR(LastName, 1,2)) AS userid
+FROM Employees
+```
+Show a list of employees who have worked for the company for 15 or more years using the current date function. Sort by lastname ascending.
+```SQL
+SELECT LastName, HireDate, 
+(DATE('now') -  DATE(HireDate)) as working_years
+FROM employees
+WHERE working_years >= 15
+ORDER BY LastName ASC
+```
