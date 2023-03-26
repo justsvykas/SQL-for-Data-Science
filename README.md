@@ -362,9 +362,255 @@ SELECT step, Union_Code, SetID
 FROM salary_range_by_job_classification
 WHERE Union_Code = '990' AND (SetID = 'SFMTA' OR SetID = 'COMMN')
 ```
-
+Find all the invoices for customer 56 and 58 where the total was between $1.00 and $5.00.
+```SQL
+SELECT InvoiceID, customerID, total, InvoiceDate
+From Invoices
+WHERE (total between 1 and 5) AND (customerID IN (56,58))
+```
+Find all the invoices from the billing city Brasília, Edmonton, and Vancouver and sort in descending order by invoice ID. What is the total invoice amount of the first record returned? 
+```SQL
+SELECT InvoiceId, BillingCity
+From Invoices
+Where BillingCity IN ('Brasília', 'Edmonton', 'Vancouver')
+Order By InvoiceId DESC
+```
+Show the number of orders placed by each customer and sort the result by the number of orders in descending order.
+```SQL
+Select CustomerID, count(InvoiceID) AS number_of_orders
+From Invoices
+Group By CustomerID
+Order by number_of_orders DESC
+```
+Find the albums with 12 or more tracks.
+```SQL
+SELECT AlbumId, count(trackId) AS number_of_tracks 
+From Tracks
+Group BY AlbumId
+HAVING number_of_tracks >= 12
+```
 ### SQL for Data Science Languages
 Some supplementary recources I liked
  - [Python-SQL Package Documentation](https://pypi.org/project/python-sql/)
  
+## Subqueries and Joins with SQL
+### Using Subqueries
+ - Subqueries are queries embedded into other queries
+ - Subqueries merge data from multiple sources together
+ - Subqueries allows to add additional filtering options
+ - Subqueries makes retrieving data more efficient
+Example:
+Need to know the region each customer is from who has had an order with freight over 100
+Solution without subquery: 
+  - Retrieve all customer IDs for orders with freight over 100
+  - Retrieve customer information
+  - Combine the two queries
+```SQL
+SELECT Distinct customerID
+From Orders
+Where Freight > 100
+```
+```SQL
+SELECT CustomerID, CompanyName, Region
+From Customers
+Where cusomerID IN ('RICSU','ERNSH', 'FRANK', 'WARTH')
+```
+Solution with subquery:
+```SQL 
+SELECT CustomerID, CompanyName, Region
+From Customers
+WHERE CustomerID in (
+  SELECT CustomerID 
+  From Orders
+  Where Freight >100 );
+```
+ - When working with subquery always perform the innermost SELECT portion first
 
+### Subquery Best Practices and Considerations
+ - There is no limit to the number of subqueries you can have
+ - Performance slows when you nest too deeply
+ - Subquery selects can only retrieve a single column
+
+Subqueries can be used for calculations
+```SQL 
+SELECT customer_name, customer_state, (
+  SELECT COUNT (*) AS orders
+  FROM Orders
+  WHERE Orders.customer_id = Customer.customer_id) AS orders
+FROM customers
+ORDER BY Customer_name
+```
+So Subqueries can be used in WHERE clause and in SELECT statement
+
+### Joining Tables: An Introduction
+The benifits of segmenting data in different tables:
+ - Logically models a process within a business, this helps to understand the way business works in the real world
+ - Easier to manipulate data
+ - Efficient storage, no duplicates
+ - Greater scalability
+
+  - Joins associate correct records from each table on the fly
+  - Joins allows data retrieval from multiple tables in one query
+  - Joins are not physical entities
+
+### Cartesian (Cross) Joins
+[CROSS JOINs](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Cross_join.png): each row from the first table joins with all the rows of another table
+
+```SQL
+SELECT product_name, unit_price, company_name
+FROM suppliers CROSS JOIN products;
+```
+Output of a CROSS JOIN will be the number of joins in the 1st table multiplied by number of rows in the 2nd table
+
+  - Cross Joins not frequently used because they are computationally taxing
+
+### Inner Joins
+The INNER JOIN keyword selects records that have matching values in both tables
+```SQL
+SELECT suppliers.CompanyName, ProductName, UnitPrice
+FROM Suppliers INNER JOIN Products
+ON Suppliers.supplierid = Products.supplierid
+```
+ - Join condition is in the FROM clause and uses the ON clause
+ - Joining more tables together affects overall database performance
+ - You can join multiple tables
+```SQL
+SELECT o.OrderID, c.CompanyName, e.LastName
+FROM ((Orders o INNER JOIN Customers c
+ON o.CustomerID = c.CustomerID)
+INNER JOIN Employees e
+ON o.EmployeeID = e.EmployeeID);
+```
+
+### Aliases and Self Joins
+SQL aliases give a table or a column a temporary name which exits for the duration of the query
+```SQL
+SELECT column_name
+FROM table_name AS alias_name
+```
+Some examples of Joins with Alias
+```SQL
+SELECT vendor_name, product_name, product_price
+FROM Vendors, Products
+WHERE Vendors.vendor_id = Products.vendor_id;
+```
+```SQL
+SELECT vendor_name, product_name, product_price
+FROM Vendors AS v, Products AS p
+WHERE v.vendor_id = p.vendor_id;
+```
+Self Joins the original table to itself
+The following example matches customers that are from the same city
+```SQL
+SELECT A.CustomerName AS CustomerName1,
+B.CustomerName AS CustomerName2, A.City
+FROM Customers (AS) A, Customers (AS) B
+WHERE A.CustomerID = B.CustomerID
+AND A.City = B.City
+ORDER BY A.City
+```
+ - When using Alias we can ommit AS part
+
+### Advanced Joins, Left, Right and Full Outer Joins
+ - SQL Lite uses only Left Joins
+ - [Left Join](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Left_join.png) Returns all records from the left table (table1), and the matched records from the right table (table2)
+ - Right Join Returns all records from the right table (table2), and the matcherd records from the left table
+ - The result is NULL if there is no match
+ - Full Outer Join Returns all records when there is a match either left or right table records
+
+```SQL 
+SELECT C.CustomerName, O.OrderID
+FROM Customer C
+LEFT JOIN Orders O ON C.CustomerID = O.CustomerID
+ORDER BY C.CustomerName;
+```
+```SQL
+SELECT Orders.OrderID, Employees.name
+FROM Orders
+RIGHT JOIN Employees ON Orders.EmployeeID =Employees.EmployeeID
+ORDER BY Orders.OrderID;
+```
+```SQL
+SELECT Customers.CustomerName, Orders.OrderID
+FROM Customers
+FULL OUTER JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+ORDER BY Customers.CustomerName;
+```
+### Unions
+ - The UNION operator is used to combine result-set of two or SELECT statements
+ - Each SELECT statement within UNION must have the same number of columns
+ - Columns must have similar data types
+ - The columns in each SELECT must be in the same order
+ - Union basically stacks tables together
+ ```SQL
+ SELECT column_name(s)
+ FROM table1
+ UNION
+ SELECT column_name(s)
+ FROM table2;
+ ```
+ ```SQL
+ SELECT City, Country FROM Customers
+ WHERE Country = 'Germany'
+ UNION
+ SELECT City, Country FROM Suppliers
+ WHERE Country = 'Germany'
+ ORDER BY City;
+ ```
+ ### Practise
+For the following examples I will refer to this [ER diagram](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/SQL_Lite_tutorial_ER_diagram.png)
+
+How many albums does the artist Led Zeppelin
+have? 
+```SQL
+SELECT ArtistId, name, (
+    SELECT COUNT(*) 
+    FROM albums
+    WHERE albums.artistId = artists.artistId)
+    AS number_of_albums
+FROM artists
+WHERE name = 'Led Zeppelin'
+```
+Create a list of album titles and the unit prices for the artist "Audioslave".
+```SQL
+SELECT artists.name,albums.title, tracks.name AS track_name, tracks.UnitPrice
+FROM ((artists INNER JOIN albums
+ON artists.ArtistId = albums.ArtistId)
+INNER JOIN tracks 
+ON albums.AlbumId = tracks.AlbumId)
+WHERE artists.name = 'Audioslave'
+```
+
+Find the first and last name of any customer who
+does not have an invoice. Are there any customers returned from the query? 
+```SQL 
+SELECT c.FirstName, c.LastName, i.invoiceId
+FROM customers c INNER JOIN invoices i
+ON c.customerId = i.customerId
+WHERE i.invoiceID IS NULL
+```
+Find the total price for each album. What is the total price for the album “Big Ones”?
+```SQL
+SELECT t.name, t.UnitPrice, a.title, (
+    SELECT  SUM(t.UnitPrice)
+    FROM tracks t
+    WHERE t.albumId = a.albumId) AS album_price
+FROM tracks t INNER JOIN albums a
+ON t.albumId = a.albumId
+WHERE a.title = 'Big Ones'
+```
+
+### Overview of Section 3
+Some methods to check whether we got the right data
+ - If you're doing a Cartesian join, check the number of
+records in the first table and the second table and multiply them to make sure it's the intended outcome.  
+ - Check the number of records each time you make a new join  
+ - Start small
+ - Take only data you need this will improve performance
+ - Stop and think about what you are trying to do before you
+start writing queries.
+ - [Summary of different kind of Joins](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/SQL_Joins_Summary.png)
+ - [Thinking in SQL vs Thinking in Python](https://mode.com/blog/learning-python-sql/) I really liked this link. *and it's not like anyone, truly, fully understands what on earth  GROUP BY really does*
+ - [Difference Between Union and Union All - Optimal Performance Comparison](https://blog.sqlauthority.com/2009/03/11/sql-server-difference-between-union-vs-union-all-optimal-performance-comparison/)
+
+ 
