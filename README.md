@@ -434,7 +434,7 @@ WHERE CustomerID in (
 Subqueries can be used for calculations
 ```SQL 
 SELECT customer_name, customer_state, (
-  SELECT COUNT (*) AS orders
+  SELECT COUNT (*)
   FROM Orders
   WHERE Orders.customer_id = Customer.customer_id) AS orders
 FROM customers
@@ -599,6 +599,52 @@ FROM tracks t INNER JOIN albums a
 ON t.albumId = a.albumId
 WHERE a.title = 'Big Ones'
 ```
+In the following exercises please refer to this [ER](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/ChinookDatabaseSchema.png)
+
+Find the names of all the tracks for the album "Californication".
+```SQL
+SELECT tracks.Name, albums.title
+FROM tracks LEFT JOIN albums
+ON tracks.albumId = albums.albumId
+WHERE albums.title = 'Californication'
+```
+We can get the same data with subqueries
+```SQL
+SELECT Name
+FROM tracks
+WHERE albumid IN (
+    SELECT albumid
+    FROM albums
+    WHERE title = 'Californication')
+```
+Find the total number of invoices for each customer along with the customer's full name, city and email.
+```SQL
+SELECT FirstName, LastName, city, email, (
+    SELECT Count(InvoiceId)
+    FROM Invoices
+    WHERE Invoices.customerId = Customers.customerId
+    ) AS Number_of_invoices
+FROM Customers
+--ORDER BY FirstName
+```
+Retrieve the track name, album, artistID, and trackID for all the albums.
+What is the song title of trackID 12 from the "For Those About To Rock We Salute You" album?
+```SQL
+SELECT t.name, a.title, a.artistId, t.trackId
+FROM tracks t LEFT JOIN albums a
+ON t.albumId = a.albumId
+WHERE t.trackId = 12 AND a.title = 'For Those About To Rock We Salute You'
+```
+Use a UNION to create a list of all the employee's and customer's first names and last names ordered by the last name in descending order.
+```SQL
+SELECT FirstName, LastName
+FROM Employees
+UNION
+SELECT FirstName, LastName
+FROM Customers
+Order By LastName DESC
+```
+
 
 ### Overview of Section 3
 Some methods to check whether we got the right data
@@ -612,5 +658,160 @@ start writing queries.
  - [Summary of different kind of Joins](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/SQL_Joins_Summary.png)
  - [Thinking in SQL vs Thinking in Python](https://mode.com/blog/learning-python-sql/) I really liked this link. *and it's not like anyone, truly, fully understands what on earth  GROUP BY really does*
  - [Difference Between Union and Union All - Optimal Performance Comparison](https://blog.sqlauthority.com/2009/03/11/sql-server-difference-between-union-vs-union-all-optimal-performance-comparison/)
+ - Joins are usually faster, but subqueries can be more reliable
 
- 
+## Section 4: Modifying and Analyzing Data with SQL
+### Working with Text Strings
+
+Modifying Data is important to retrieve data in the format you need
+ - String Functions:
+    - Concatenate (linking together or adds together)
+    - Substring: Returns the specified number of characters from particular position of given string. ```SUBSTR```
+    - Trim: trims the leading or trailling space from a string. Functions: ```TRIM```, ```RTRIM```, ```LTRIM```(R - right, L - left side of string rsp.)
+    - ```UPPER()```, ```LOWER()``` functions make all strings in the column in upper or lower case
+
+Concatenations || (SQL server supports + instead ||)
+```SQL
+SELECT CompanyName, ContactName, CompanyName || '('|| ContactName ||')'
+FROM customers
+```
+Trim
+```SQL
+SELECT TRIM ("    You the best.   ") AS TrimmedString;
+```
+Substring
+```SQL
+SUBSTR(string name, string position, 
+number of characters to be returned)
+```
+```SQL
+SELECT first_name,
+SUBSTR(first_name, 3,4)
+FROM employees
+WHERE department_id=100;
+```
+```SQL
+SELECT UPPER(LOWER)(column_name) FROM table_name;
+```
+### Working with Date and Time Strings
+There is a lot of different formats for Date and time variables
+If you query a ```DATETIME``` with:
+```SQL WHERE PurchaseDate = '2016-12-12'```
+You will get no results
+SQLite supports 5 date and time functions:
+```SQL
+DATE(timestring, modifier, modifier, ...)
+TIME(timestring, mod, mod, ...)
+DATETIME(timestring, mod, mod, ...)
+JULIANDAY(timestring, mod, mod, ...)
+STRFTIME(format, timestring, mod, mod, ...)
+```
+timestrings:
+```SQL
+YYYY-MM-DD
+YYYY-MM-DD HH:MM:SS
+HH:MM
+```
+Modifiers:
+NNN days, NNN hours, NNN years etc
+
+### Date and Time String Examples
+```SQL
+SELECT Birthdate,
+STRFTIME ('%Y', Birthdate) AS Year,
+STRFTIME ('%m', Birthdate) AS Month,
+STRFTIME ('%d', Birthdate) AS Day,
+DATE(('now') - Birthdate) AS Age
+From employees
+```
+Compute Current Date:
+```SQL
+SELECT DATE('now')
+```
+```SQL
+SELECT STRFTIME('%Y %m %d','now')
+```
+### Case Statements
+Case statement mimics if-else statement found in other programming languages. Can Be used in SELECT, INSERT, UPDATE, DELETE statements
+```SQL
+CASE
+WHEN C1 THEN E1
+WHEN C2 THEN E2
+...
+ELSE result else
+END
+```
+```SQL
+SELECT employeeid, city, CASE city
+WHEN 'Calgary' Then 'Calgary'
+ELSE 'Other' END calgary
+FROM Employees
+```
+### Views
+A View is a stored query. It can add or remove columns without changing shcema. They help to simplify the queries that you write. View is an illusion of a ```Table```.
+```SQL
+CREATE [TEMP] VIEW [IF NOT EXISTS]
+view_name(column-name-list) AS select-statement;
+```
+```SQL
+CREATE VIEW my_view
+AS SELECT r.regiondesc, tterritorydesc
+FROM Region r INNER JOIN Territories t ON r.regionid = t.refionid
+```
+To View data
+```SQL
+SELECT *
+FROM my_view
+```
+To Drop view
+```SQL 
+DROP VIEW my_view;
+```
+### Data Governcance and Profiling
+Data Profiling is looking at descriptive statistics or object data infromation - examining data for completeness and accuracy
+i.e. Getting to know:
+  - Number of rows
+  - Table size
+  - When the object was last updated
+  - Column data type
+  - Number of distinct values
+  - Number of rows with NULL values
+  - Descriptive statistics: max, average, standart deviation.
+
+### Using SQL for Data Science, Part 1
+Working through a Problem from Beginning to End:
+  - Data understanding/Bussiness Understanding:
+    - Null values
+    - String values
+    - Dates and times
+    - Understanding where data joins are
+    - Differianting integers from strings
+    - Investing time to understand your subject will help later during data analysis
+    - We want to predict whether or not a customer will buy our product
+    - Which customers? What product? What is excluded? What is counted from the past?
+
+### Using SQL for Data Science, Part 2
+  - Profiling Data
+    - Get into the details of your data
+    - Create data model and map the fieds and tables you need (draw with pencil on paper!)
+    - Consider Joins and calculations
+    - Understand any data quality or format issues
+  - Start with SELECT
+    - Start simple i.e. take few collumns
+    - Add in special formatting
+    - Use subqueries
+  - Test and Troubleshoot
+    - Do not wait until the end to test queries
+    - Test after each join or filter
+    - Are you getting the results you excpect?
+    - Start small and go step-by-step when troubleshooting a query
+  - Format and Comment
+    - Use correct formatting and indentation
+    - Comment strategically
+    - Clean code and comments help when you revisit or hand off code
+  - Review
+    - Review old queries
+    - Business rules
+    - Date changes
+    - Date indicators
+    - Work the problem for beginning to end
