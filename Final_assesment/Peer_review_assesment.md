@@ -1,5 +1,7 @@
-# Introduction
-Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+# Data Scientist Role Play: Profiling and Analyzing the Yelp Dataset Coursera Worksheet
+
+## Introduction 
 
 This is a 2-part assignment. In the first part, you are asked a series of questions that will help you profile and understand the data just like a data scientist would. For this first part of the assignment, you will be assessed both on the correctness of your findings, as well as the code you used to arrive at your answer. You will be graded on how easy your code is to read, so remember to use proper formatting and comments where necessary.
 
@@ -10,9 +12,9 @@ We will be using Yelp dataset which ER diagram you can see below
 
 
 
-# Part 1: Yelp Dataset Profiling and Understanding
+## Part 1: Yelp Dataset Profiling and Understanding
 
-1. Profile the data by finding the total number of records for each of the tables below:
+### 1. Profile the data by finding the total number of records for each of the tables below:
 	
 i. Attribute table = 10000
 ```SQL
@@ -72,7 +74,7 @@ FROM user
 	
 
 
-2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
+### 2. Find the total distinct records by either the foreign key or primary key for each table. If two foreign keys are listed in the table, please specify which foreign key.
 
 i. Business = 10000
 ```SQL
@@ -136,12 +138,12 @@ Note: Primary Keys are denoted in the ER-Diagram with a yellow key icon.
 
 
 
-3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
+### 3. Are there any columns with null values in the Users table? Indicate "yes," or "no."
 
-	Answer: NO
+Answer: NO
 	
 	
-	SQL code used to arrive at answer:
+SQL code used to arrive at answer:
 ```SQL
 SELECT *
 FROM user
@@ -159,116 +161,174 @@ or compliment_photos is null
 	
 
 	
-4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
+### 4. For each table and column listed below, display the smallest (minimum), largest (maximum), and average (mean) value for the following fields:
 
-	i. Table: Review, Column: Stars
+- i. Table: Review, Column: Stars
 	
 		min: 1		max: 5		avg: 3.7082
-	
+
+	SQL code used to arrive at the solution
 	```sql
 	SELECT min(stars), max(stars), avg(stars)
 	FROM review
 	```
 	Code is similar to following exercises
 	
-	ii. Table: Business, Column: Stars 
+- ii. Table: Business, Column: Stars 
 	
 		min: 1		max: 5   	avg:  3.6549
 		
 	
-	iii. Table: Tip, Column: Likes
+- iii. Table: Tip, Column: Likes
 	
 		min: 0		max: 2		avg: 0.0144
 		
 	
-	iv. Table: Checkin, Column: Count
+- iv. Table: Checkin, Column: Count
 	
 		min: 1		max: 53		avg: 1.9414
 		
-	
-	v. Table: User, Column: Review_count
+ - v. Table: User, Column: Review_count
 	
 		min: 0		max: 2000		avg: 24.2995
 		
 
 
-5. List the cities with the most reviews in descending order:
+### 5. List the cities with the most reviews in descending order:
 
-	SQL code used to arrive at answer:
-	```SQL
-	SELECT city, sum(review_count) As review_count
-	FROM business
-	Group by city
-	ORDER BY review_count DESC
-	```
-	Output:
+SQL code used to arrive at answer:
+```SQL
+SELECT city, sum(review_count) As review_count
+FROM business
+Group by city
+ORDER BY review_count DESC
+```
+Output:
 
-	![ex5](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex5.png)
+![ex5](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex5.png)
 	 
 	
 
 	
-6. Find the distribution of star ratings to the business in the following cities:
+### 6. Find the distribution of star ratings to the business in the following cities:
 
-i. Avon
+- i. Avon
 
+	SQL code used to arrive at answer:
+	```SQL
+	SELECT stars, Count(*) as number_of_stars
+	FROM business
+	WHERE city = 'Avon'
+	Group BY stars
+	```
+	Output:
+
+	![ex6i](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6i_up.png)
+
+
+- ii. Beachwood
+
+	SQL code used to arrive at answer:
+	```SQL
+	SELECT stars, COunt(*) as number_of_stars
+	FROM business
+	WHERE city = 'Beachwood'
+	Group BY stars
+	```
+	Output:
+
+	![ex6ii](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6ii_up.png)
+
+
+### 7. Find the top 3 users based on their total number of reviews:
+		
 SQL code used to arrive at answer:
 ```SQL
-SELECT stars, Count(*) as number_of_stars
-FROM business
-WHERE city = 'Avon'
-Group BY stars
+SELECT id, name, review_count
+FROM user
+ORDER BY review_count DESC
+LIMIT 3
 ```
+	
 Output:
-![ex6i](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6i_up.png)
+
+![ex7]
+		
 
 
-ii. Beachwood
+### 8. Does posing more reviews correlate with more fans?
 
-SQL code used to arrive at answer:
+Please explain your findings and interpretation of the results:
+
+From calculations below we can easily notice that in general more reviews attracts more fans 
+
 ```SQL
-SELECT stars, COunt(*) as number_of_stars
-FROM business
-WHERE city = 'Beachwood'
-Group BY stars
+SELECT COUNT(id) as number_of_users, 
+avg(review_count) as avg_review_count,
+
+-- I classify fans into boxes so we could investigate
+-- the relationship between number of reviews and number of fans
+-- i.e. (11,15) means user has between 11 and 15 fans
+
+CASE WHEN fans BETWEEN 0 and 2 THEN '(0,2)'
+WHEN fans BETWEEN 3 and 5 THEN '(3,5)'
+WHEN fans BETWEEN 6 and 10 THEN '(6,10)'
+WHEN fans BETWEEN 11 and 15 THEN '(11,15)'
+WHEN fans BETWEEN 16 and 20 THEN '(16,20)'
+WHEN fans BETWEEN 21 and 30 THEN '(21,30)'
+WHEN fans BETWEEN 31 and 40 THEN '(31,40)'
+WHEN fans BETWEEN 41 and 50 THEN '(41,50)'
+WHEN fans BETWEEN 50 and 99 THEN '(50,99)'
+WHEN fans BETWEEN 100 and 149 THEN '(100,149)'
+WHEN fans BETWEEN 150 and 199 THEN '(150,199)'
+WHEN fans BETWEEN 200 and 249 THEN '(200,249)'
+WHEN fans BETWEEN 250 and 299 THEN '(250,299)'
+WHEN fans BETWEEN 300 and 349 THEN '(350,349)'
+WHEN fans BETWEEN 350 and 399 THEN '(350,399)'
+ELSE '>= 400' END nr_of_fans
+
+FROM user
+GROUP BY nr_of_fans
+ORDER BY avg_review_count
 ```
 Output:
-![ex6ii](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6ii_up.png)
 
-
-7. Find the top 3 users based on their total number of reviews:
-		
-	SQL code used to arrive at answer:
-	
-		
-	Copy and Paste the Result Below:
-		
-
-
-8. Does posing more reviews correlate with more fans?
-
-	Please explain your findings and interpretation of the results:
-	
+![ex8]()
 
 	
-9. Are there more reviews with the word "love" or with the word "hate" in them?
+### 9. Are there more reviews with the word "love" or with the word "hate" in them?
 
-	Answer:
+	Answer: There are more reviews with the word love
 
 	
 	SQL code used to arrive at answer:
 
-	
+```SQL
+SELECT 
+sum(CASE WHEN text LIKE '%love%' THEN 1
+ELSE 0 END) as love_nr,
+sum(CASE WHEN text LIKE '%hate%' THEN 1
+ELSE 0 END) as hate_nr
+FROM review
+```
+Output:
+
+![ex9]()
 	
 10. Find the top 10 users with the most fans:
 
 	SQL code used to arrive at answer:
-	
-	
+
+```SQL
+SELECT name, fans
+FROM user
+ORDER BY fans DESC
+LIMIT 10
+```
 	Copy and Paste the Result Below:
 
+![ex10]()	
 	
-		
 
 Part 2: Inferences and Analysis
 
