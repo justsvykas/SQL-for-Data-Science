@@ -5,7 +5,7 @@ This is a 2-part assignment. In the first part, you are asked a series of questi
 
 In the second part of the assignment, you are asked to come up with your own inferences and analysis of the data for a particular research question you want to answer. You will be required to prepare the dataset for the analysis you choose to do. As with the first part, you will be graded, in part, on how easy your code is to read, so use proper formatting and comments to illustrate and communicate your intent as required.
 
-We will be using Yelp dataset
+We will be using Yelp dataset which ER diagram you can see below
 ![dataset](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_dataset_ER.png)
 
 
@@ -200,8 +200,8 @@ or compliment_photos is null
 	Group by city
 	ORDER BY review_count DESC
 	```
-	
-	![Copy and Paste the Result Below]:
+	Output:
+	![ex5](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex5.png)
 	 
 	
 
@@ -217,7 +217,8 @@ FROM business
 WHERE city = 'Avon'
 Group BY stars
 ```
-Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
+Output:
+![ex6i](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6i_up.png)
 
 
 ii. Beachwood
@@ -229,9 +230,8 @@ FROM business
 WHERE city = 'Beachwood'
 Group BY stars
 ```
-
-Copy and Paste the Resulting Table Below (2 columns â€“ star rating and count):
-		
+Output:
+![ex6ii](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex6ii_up.png)
 
 
 7. Find the top 3 users based on their total number of reviews:
