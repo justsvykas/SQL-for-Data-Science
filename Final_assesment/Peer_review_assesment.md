@@ -201,7 +201,7 @@ or compliment_photos is null
 	Group by city
 	ORDER BY review_count DESC
 	```
-	Output:\
+	Output:
 
 	![ex5](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex5.png)
 	 
