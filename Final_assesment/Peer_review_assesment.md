@@ -94,7 +94,7 @@ iv. Attribute = 1115
 SELECT Distinct business_id
 FROM attribute
 ```
-v. Review = 9581 with respect to user_id
+v. Review = 9581 with respect to user_id.\
 This means there are 9581 distinct users who has written at least 1 review. I avoided using primary key ```id```, because we already know the information from exercise 1 (primary key can't have the same value)
 ```SQL
 SELECT Distinct user_id
@@ -147,7 +147,8 @@ SELECT *
 FROM user
 WHERE id is null or name is null or review_count is null
 or yelping_since is null or useful is null
-or funny is null or cool is null or fans is null or average_stars is null
+or funny is null or cool is null
+or fans is null or average_stars is null
 or compliment_hot is null or compliment_more is null
 or compliment_profile is null or compliment_cute is null
 or compliment_list is null or compliment_note is null
@@ -200,7 +201,8 @@ or compliment_photos is null
 	Group by city
 	ORDER BY review_count DESC
 	```
-	Output:
+	Output:\
+
 	![ex5](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex5.png)
 	 
 	
