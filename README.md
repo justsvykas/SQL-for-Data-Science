@@ -2,7 +2,10 @@
 
 ## Table of Contents
 - [**Section 1: Selecting and Retrieving data**]
-
+- [Section 2]
+- [Section 3]
+- [Section 4]
+- [Final Assesment](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Peer_review_assesment.md)
 
 
 
