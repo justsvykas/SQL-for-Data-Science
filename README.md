@@ -2,10 +2,10 @@
 This is my notes for Coursera course SQL for Data Science
 
 ## Table of Contents
-- [**Section 1: Selecting and Retrieving data**](#selecting-and-retrieving-data)
+- [Section 1: Selecting and Retrieving data](#selecting-and-retrieving-data)
 - [Section 2: Filtering of Data](#filtering-of-data)
-- [Section 3]
-- [Section 4]
+- [Section 3: Subqueries and Joins with SQL](#subqueries-and-joins-with-sql)
+- [Section 4: Modifying and Analyzing Data with SQL](#modifying-and-analyzing-data-with-sql)
 - [Final Assesment](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Peer_review_assesment.md)
 
 
@@ -664,7 +664,7 @@ start writing queries.
  - [Difference Between Union and Union All - Optimal Performance Comparison](https://blog.sqlauthority.com/2009/03/11/sql-server-difference-between-union-vs-union-all-optimal-performance-comparison/)
  - Joins are usually faster, but subqueries can be more reliable
 
-## Section 4: Modifying and Analyzing Data with SQL
+## Modifying and Analyzing Data with SQL
 ### Working with Text Strings
 
 Modifying Data is important to retrieve data in the format you need
