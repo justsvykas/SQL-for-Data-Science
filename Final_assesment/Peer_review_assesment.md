@@ -420,12 +420,45 @@ Ideas for analysis include: Parsing out keywords and business attributes for sen
 	
 i. Indicate the type of analysis you chose to do:
 
-Predicting the number of fans a user will have
+Predicting the number of fans a user will have.
          
 ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
+
+The most important data that I will need is review_count from user table. From the data we have analyzed, we can notice that number of reviews and number of fans follow a nice linear graph. This allows me to approximate number of fans.
+
+Ofcourse, we can also look at how many useful, funny and cool the user has recieved. This can allows us to doublecheck our prognozis for fan number. Although the graph relating to number of fans and useful/funny/cool look a lot more skewed than that ofr number of reviews. Thus, giving less weight to these attributes would be best.
                            
                   
 iii. Output of your finished dataset:
-         
+
+![ex2_3](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex_2_3.png)
          
 iv. Provide the SQL code you used to create your final dataset:
+
+```SQL
+SELECT 
+CASE WHEN fans BETWEEN 0 and 2 THEN '(0,2)'
+WHEN fans BETWEEN 3 and 5 THEN '(3,5)'
+WHEN fans BETWEEN 6 and 10 THEN '(6,10)'
+WHEN fans BETWEEN 11 and 15 THEN '(11,15)'
+WHEN fans BETWEEN 16 and 20 THEN '(16,20)'
+WHEN fans BETWEEN 21 and 25 THEN '(21,25)'
+WHEN fans BETWEEN 25 and 30 THEN '(25,30)'
+WHEN fans BETWEEN 31 and 40 THEN '(31,40)'
+WHEN fans BETWEEN 41 and 50 THEN '(41,50)'
+WHEN fans BETWEEN 51 and 65 THEN '(50,65)'
+WHEN fans BETWEEN 66 and 99 THEN '(66,99)'
+WHEN fans BETWEEN 100 and 149 THEN '(100,149)'
+WHEN fans BETWEEN 150 and 199 THEN '(150,199)'
+ELSE '>= 200' END nr_of_fans,
+
+COUNT(id) as number_of_users, 
+avg(review_count) as avg_review_count,
+avg(useful),
+avg(funny),
+avg(cool)
+
+FROM user
+GROUP BY nr_of_fans
+ORDER BY number_of_users DESC
+```
