@@ -2,8 +2,8 @@
 This is my notes for Coursera course SQL for Data Science
 
 ## Table of Contents
-- [**Section 1: Selecting and Retrieving data**](##section-1:-selecting-and-retrieving-data)
-- [Section 2: Filtering of Data](##section-2:filtering-of-data)
+- [**Section 1: Selecting and Retrieving data**](#section-1:-selecting-and-retrieving-data)
+- [Section 2: Filtering of Data](#section-2:filtering-of-data)
 - [Section 3]
 - [Section 4]
 - [Final Assesment](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Peer_review_assesment.md)
