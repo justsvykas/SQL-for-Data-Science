@@ -2,15 +2,15 @@
 This is my notes for Coursera course SQL for Data Science
 
 ## Table of Contents
-- [**Section 1: Selecting and Retrieving data**](#section-1:-selecting-and-retrieving-data)
-- [Section 2: Filtering of Data](#section-2:filtering-of-data)
+- [**Section 1: Selecting and Retrieving data**](#selecting-and-retrieving-data)
+- [Section 2: Filtering of Data](#filtering-of-data)
 - [Section 3]
 - [Section 4]
 - [Final Assesment](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Peer_review_assesment.md)
 
 
 
-## Section 1: Selecting and Retrieving data
+## Selecting and Retrieving data
 ### What is SQL is Anyway?
 - The acronym SQL stand for Structured Query language
 - SQL is the standard language for relational database management and for data manipulation
@@ -159,7 +159,7 @@ From Invoices;
   *Certainly, SQL is not dead yet.*
   - [TechRepublic: NoSQL keeps rising, but relational databases still dominate big data](https://www.techrepublic.com/article/nosql-keeps-rising-but-relational-databases-still-dominate-big-data/)
 
-## Section 2: Filtering of Data
+## Filtering of Data
 
 ### Basics of Filtering in SQL
 
