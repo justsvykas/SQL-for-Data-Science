@@ -252,7 +252,7 @@ LIMIT 3
 	
 Output:
 
-![ex7]
+![ex7](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex7.png)
 		
 
 
@@ -293,7 +293,7 @@ ORDER BY avg_review_count
 ```
 Output:
 
-![ex8]()
+![ex8](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex8_up.png)
 
 	
 ### 9. Are there more reviews with the word "love" or with the word "hate" in them?
@@ -313,7 +313,7 @@ FROM review
 ```
 Output:
 
-![ex9]()
+![ex9](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex9.png)
 	
 10. Find the top 10 users with the most fans:
 
@@ -327,7 +327,7 @@ LIMIT 10
 ```
 	Copy and Paste the Result Below:
 
-![ex10]()	
+![ex10](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex10.png)	
 	
 
 Part 2: Inferences and Analysis
@@ -336,7 +336,7 @@ Part 2: Inferences and Analysis
 
 From doing a little bit of analysis I found out the top 5 cities in which there are most businesses. I picked Phoenix just because it sounds cool.
 
-![ex1.2]()
+![ex1.2](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex1_2.png)
 	
 I picked restaurant category since Phoenix has most businesses in this area. There is 4 distinct restaurants with ratings 2-3 stars (McDonald's and Gallagher's) and 4-5 stars (Charlie D's and Bootleggers)
 
@@ -387,7 +387,7 @@ ORDER BY name_of_bussines
 ```
 
 Output:
-![ex2_1ii]
+![ex2_1ii](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_2_1iii.png)
 
 		
 		
