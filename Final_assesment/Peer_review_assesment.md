@@ -110,7 +110,7 @@ FROM checkin
 vii. Photo = 6493 w.r.t. business_id (Similar argument as in 2)v.)
 ```SQL
 SELECT Distinct business_id
-FROM checkin
+FROM photo
 ```
 viii. Tip = 537 w.r.t. user_id
 ```SQL
