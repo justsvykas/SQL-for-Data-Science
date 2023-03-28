@@ -333,30 +333,85 @@ LIMIT 10
 Part 2: Inferences and Analysis
 
 1. Pick one city and category of your choice and group the businesses in that city or category by their overall star rating. Compare the businesses with 2-3 stars to the businesses with 4-5 stars and answer the following questions. Include your code.
+
+From doing a little bit of analysis I found out the top 5 cities in which there are most businesses. I picked Phoenix just because it sounds cool.
+
+![ex1.2]()
 	
+I picked restaurant category since Phoenix has most businesses in this area. There is 4 distinct restaurants with ratings 2-3 stars (McDonald's and Gallagher's) and 4-5 stars (Charlie D's and Bootleggers)
+
 i. Do the two groups you chose to analyze have a different distribution of hours?
 
+4-5 star restaurants start working at same time 11:00 where Bootleggers finish at 22:00 and Charlie's finish at 18:00
+2-3 star restaurants start working a lot earlier comparitively and ends work a lot later.
+The difference in rating between these groups definetly doesn't correlate with having more working hours higher accessability. I would hypothise the difference in rating must lie in the quality of food provided by restaurants.
 
 ii. Do the two groups you chose to analyze have a different number of reviews?
-         
+
+4-5 star restaurants together has 438 reviews while 2-3 star ones has only 68. 
          
 iii. Are you able to infer anything from the location data provided between these two groups? Explain.
 
+Neighborhood of these restaurants in mind is not provided,
+While postal code and addresses differ from each restaurant. Thus I cant conclude anything from the data given.
+
 SQL code used for analysis:
+```SQL
+SELECT
+--b.city, 
+b.name AS name_of_bussines, 
+--c.category,
+
+CASE WHEN b.stars BETWEEN 2 AND 3 THEN '2-3 stars'
+WHEN b.stars BETWEEN 4 AND 5 THEN '4-5 stars'
+ELSE 'other' END stars_category,
+
+h.hours,
+b.review_count,
+b.address,
+b.neighborhood,
+b.postal_code
+
+FROM (business b INNER JOIN category c 
+ON b.id = c.business_id)
+
+INNER JOIN hours h
+ON b.id = h.business_id
+
+WHERE b.city = 'Phoenix'
+AND (stars_category = '2-3 stars' 
+OR stars_category = '4-5 stars')
+AND category = 'Restaurants'
+
+ORDER BY name_of_bussines 
+```
+
+Output:
+![ex2_1ii]
 
 		
 		
 2. Group business based on the ones that are open and the ones that are closed. What differences can you find between the ones that are still open and the ones that are closed? List at least two differences and the SQL code you used to arrive at your answer.
-		
+
 i. Difference 1:
+
+Average number of reviews for closed businesses is around 23 which is significantly lower number than that of open businesses which is 32.
+While also the average star rating is in favor for open businesses.
          
          
 ii. Difference 2:
-         
-         
-         
-SQL code used for analysis:
 
+The number of businesses that are open is higher than number of closed ones.
+         
+```SQL         
+SELECT is_open, COUNT(name) AS num_of_business,
+AVG(review_count) AS average_review_num,
+AVG(stars) AS average_star_num
+FROM business
+GROUP BY is_open
+```
+
+![ex2_2]()
 	
 	
 3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
@@ -364,7 +419,8 @@ SQL code used for analysis:
 Ideas for analysis include: Parsing out keywords and business attributes for sentiment analysis, clustering businesses to find commonalities or anomalies between them, predicting the overall star rating for a business, predicting the number of fans a user will have, and so on. These are just a few examples to get you started, so feel free to be creative and come up with your own problem you want to solve. Provide answers, in-line, to all of the following:
 	
 i. Indicate the type of analysis you chose to do:
-         
+
+Predicting the number of fans a user will have
          
 ii. Write 1-2 brief paragraphs on the type of data you will need for your analysis and why you chose that data:
                            
