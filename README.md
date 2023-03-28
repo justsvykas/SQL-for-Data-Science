@@ -1,4 +1,5 @@
 # SQL-for-Data-Science
+This is my notes for Coursera course SQL for Data Science
 
 ## Table of Contents
 - [**Section 1: Selecting and Retrieving data**]
