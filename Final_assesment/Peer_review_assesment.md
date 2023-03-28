@@ -359,8 +359,8 @@ SQL code used for analysis:
 ```SQL
 SELECT
 --b.city, 
-b.name AS name_of_bussines, 
 --c.category,
+b.name AS name_of_bussines, 
 
 CASE WHEN b.stars BETWEEN 2 AND 3 THEN '2-3 stars'
 WHEN b.stars BETWEEN 4 AND 5 THEN '4-5 stars'
@@ -387,6 +387,7 @@ ORDER BY name_of_bussines
 ```
 
 Output:
+
 ![ex2_1ii](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_2_1iii.png)
 
 		
@@ -411,7 +412,7 @@ FROM business
 GROUP BY is_open
 ```
 
-![ex2_2]()
+![ex2_2](https://github.com/justsvykas/SQL-for-Data-Science/blob/main/Final_assesment/Yelp_ex2_2.png)
 	
 	
 3. For this last part of your analysis, you are going to choose the type of analysis you want to conduct on the Yelp dataset and are going to prepare the data for analysis.
