@@ -2,7 +2,7 @@
 This is my notes for Coursera course SQL for Data Science
 
 ## Table of Contents
-- [**Section 1: Selecting and Retrieving data**](#Section 1: Selecting and Retrieving data)
+- [**Section 1: Selecting and Retrieving data**](#section-1:-selecting-and-retrieving-data)
 - [Section 2]
 - [Section 3]
 - [Section 4]
